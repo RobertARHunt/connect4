@@ -6,8 +6,6 @@ import { getStartState } from './helpers';
 function MainGrid() {
   const [gridState, setGridState] = useState(getStartState());
 
-  console.log({ gridState });
-
   return (
     <StyledContainer>
       {gridState.map((cell, ix) => {
