@@ -22,16 +22,29 @@ export function getStartState() {
 }
 
 export function setCellValueInGrid(cellToChange, newValue, cells) {
-  const cellsWithNewValue = cells.map((currentCell) => {
-    if (cellToChange === currentCell) {
-      return setCellValue(currentCell, newValue);
-    } else {
-      return currentCell;
-    }
-  });
-  return cellsWithNewValue;
+  cellToChange = lowestAvailableCellInColumn(cellToChange.column, cells);
+  if (cellToChange) {
+    const cellsWithNewValue = cells.map((currentCell) => {
+      if (cellToChange === currentCell) {
+        return setCellValue(currentCell, newValue);
+      } else {
+        return currentCell;
+      }
+    });
+    return cellsWithNewValue;
+  } else {
+    return cells;
+  }
 }
 
 function setCellValue(cell, newValue) {
   return { ...cell, value: newValue };
+}
+
+function lowestAvailableCellInColumn(column, cells) {
+  var counter = 35;
+  while (counter >= 0) {
+    if (cells[counter + column].value === 0) return cells[counter + column];
+    counter -= 7;
+  }
 }
