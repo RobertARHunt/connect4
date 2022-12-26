@@ -5,22 +5,26 @@ import { getStartState, setCellValueInGrid } from './helpers';
 
 function MainGrid() {
   const [gridState, setGridState] = useState(getStartState());
+  const [turnState, setTurnState] = useState(1);
 
   return (
     <StyledContainer>
       {gridState.map((cell, ix) => {
-        const newOnClick = onClickHandler(cell, ix);
-        return <GridCell cell={cell} key={ix} onClick={newOnClick}></GridCell>;
+        return (
+          <GridCell
+            cell={cell}
+            key={ix}
+            onClick={onClickHandler(cell, ix)}
+          ></GridCell>
+        );
       })}
     </StyledContainer>
   );
   function onClickHandler(cell, ix) {
     return () => {
-      console.log('Cell Was Changed', { cell, ix });
       if (cell.value === 0) {
-        setGridState({
-          cells: setCellValueInGrid(cell, 1, gridState),
-        });
+        setGridState(setCellValueInGrid(cell, turnState, gridState));
+        setTurnState(3 - turnState);
       }
     };
   }

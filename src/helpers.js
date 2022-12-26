@@ -33,6 +33,5 @@ export function setCellValueInGrid(cellToChange, newValue, cells) {
 }
 
 function setCellValue(cell, newValue) {
-  console.log('Cell Was Clicked!', { cell, newValue });
   return { ...cell, value: newValue };
 }

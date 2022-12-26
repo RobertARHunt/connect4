@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
-function GridCell({ cell }) {
-  return <StyledCell value={cell.value}></StyledCell>;
+function GridCell({ cell, onClick }) {
+  return <StyledCell value={cell.value} onClick={onClick}></StyledCell>;
 }
 
 const StyledCell = styled.div`
