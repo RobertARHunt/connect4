@@ -13,9 +13,26 @@ export function getStartState() {
         row,
         column,
       });
+      // console.log(newCell);
       cells.push(newCell);
     }
   }
-
+  // console.log(cells);
   return cells;
+}
+
+export function setCellValueInGrid(cellToChange, newValue, cells) {
+  const cellsWithNewValue = cells.map((currentCell) => {
+    if (cellToChange === currentCell) {
+      return setCellValue(currentCell, newValue);
+    } else {
+      return currentCell;
+    }
+  });
+  return cellsWithNewValue;
+}
+
+function setCellValue(cell, newValue) {
+  console.log('Cell Was Clicked!', { cell, newValue });
+  return { ...cell, value: newValue };
 }

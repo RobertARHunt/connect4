@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import GridCell from './GridCell';
-import { getStartState } from './helpers';
+import { getStartState, setCellValueInGrid } from './helpers';
 
 function MainGrid() {
   const [gridState, setGridState] = useState(getStartState());
@@ -9,10 +9,21 @@ function MainGrid() {
   return (
     <StyledContainer>
       {gridState.map((cell, ix) => {
-        return <GridCell cell={cell} key={ix}></GridCell>;
+        const newOnClick = onClickHandler(cell, ix);
+        return <GridCell cell={cell} key={ix} onClick={newOnClick}></GridCell>;
       })}
     </StyledContainer>
   );
+  function onClickHandler(cell, ix) {
+    return () => {
+      console.log('Cell Was Changed', { cell, ix });
+      if (cell.value === 0) {
+        setGridState({
+          cells: setCellValueInGrid(cell, 1, gridState),
+        });
+      }
+    };
+  }
 }
 
 const StyledContainer = styled.div`
