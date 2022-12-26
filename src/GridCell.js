@@ -11,15 +11,15 @@ const StyledCell = styled.div`
   cursor: pointer;
 
   ${(props) =>
-    props.value == 0
+    props.value === 0
       ? css`
           background-color: lightgray;
         `
-      : props.value == 1
+      : props.value === 1
       ? css`
           background-color: green;
         `
-      : props.value == 2 &&
+      : props.value === 2 &&
         css`
           background-color: red;
         `}
