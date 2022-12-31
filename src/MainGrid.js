@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import GridCell from './GridCell';
-import { getStartState, setCellValueInGrid } from './helpers';
+import { getStartState, setCellValueInGrid, checkCompletion } from './helpers';
 
 function MainGrid() {
   const [gridState, setGridState] = useState(getStartState());
@@ -14,6 +14,7 @@ function MainGrid() {
           <GridCell
             cell={cell}
             key={ix}
+            ix={ix}
             onClick={onClickHandler(cell, ix)}
           ></GridCell>
         );
@@ -24,6 +25,12 @@ function MainGrid() {
     return () => {
       if (cell.value === 0) {
         setGridState(setCellValueInGrid(cell, turnState, gridState));
+        if (checkCompletion(gridState) === 1) {
+          alert('Green Wins!');
+        }
+        if (checkCompletion(gridState) === 2) {
+          alert('Red Wins!');
+        }
         setTurnState(3 - turnState);
       }
     };

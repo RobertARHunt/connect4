@@ -7,15 +7,16 @@ function getEmptyCell(props) {
 
 export function getStartState() {
   const cells = [];
-  for (let row = 0; row < 6; row++) {
-    for (let column = 0; column < 7; column++) {
-      const newCell = getEmptyCell({
-        row,
-        column,
-      });
-      // console.log(newCell);
-      cells.push(newCell);
-    }
+  for (let index = 0; index < 42; index++) {
+    const row = Math.floor(index / 7);
+    const column = index % 7;
+    const newCell = getEmptyCell({
+      row,
+      column,
+      index,
+    });
+    // console.log(newCell);
+    cells.push(newCell);
   }
   // console.log(cells);
   return cells;
@@ -47,4 +48,65 @@ function lowestAvailableCellInColumn(column, cells) {
     if (cells[counter + column].value === 0) return cells[counter + column];
     counter -= 7;
   }
+}
+
+export function checkCompletion(cells) {
+  const playerCells = cells.filter((c) => c.value === 1);
+  const opponentCells = cells.filter((c) => c.value === 2);
+  var directions = [
+    { dir: 'UPLEFT', index: -8 },
+    { dir: 'UP', index: -7 },
+    { dir: 'UPRIGHT', index: -6 },
+    { dir: 'LEFT', index: -1 },
+    { dir: 'RIGHT', index: +1 },
+    { dir: 'DOWNLEFT', index: +6 },
+    { dir: 'DOWN', index: +7 },
+    { dir: 'DOWNRIGHT', index: +8 },
+  ];
+
+  directions.forEach((direction) => {
+    playerCells.forEach((cell) => {
+      var cellIndexToCheck = cell.index + direction.index;
+      if (
+        cells[cellIndexToCheck] !== undefined &&
+        cells[cellIndexToCheck].value === 1
+      ) {
+        cellIndexToCheck += direction.index;
+        if (
+          cells[cellIndexToCheck] !== undefined &&
+          cells[cellIndexToCheck].value === 1
+        ) {
+          console.log({ direction, cell, check: cellIndexToCheck });
+          cellIndexToCheck += direction.index;
+          if (
+            cells[cellIndexToCheck] !== undefined &&
+            cells[cellIndexToCheck].value === 1
+          ) {
+            return 1;
+          }
+        }
+      }
+    });
+    opponentCells.forEach((cell) => {
+      var cellIndexToCheck = cell.index + direction.index;
+      if (
+        cells[cellIndexToCheck] !== undefined &&
+        cells[cellIndexToCheck].value === 2
+      ) {
+        cellIndexToCheck += direction.index;
+        if (
+          cells[cellIndexToCheck] !== undefined &&
+          cells[cellIndexToCheck].value === 2
+        ) {
+          cellIndexToCheck += direction.index;
+          if (
+            cells[cellIndexToCheck] !== undefined &&
+            cells[cellIndexToCheck].value === 2
+          ) {
+            return 2;
+          }
+        }
+      }
+    });
+  });
 }
