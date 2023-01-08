@@ -8,11 +8,11 @@ function getEmptyCell(props) {
 export function getStartState() {
   const cells = [];
   for (let index = 0; index < 42; index++) {
-    const row = Math.floor(index / 7);
-    const column = index % 7;
+    const y = Math.floor(index / 7);
+    const x = index % 7;
     const newCell = getEmptyCell({
-      row,
-      column,
+      y,
+      x,
       index,
     });
     // console.log(newCell);
@@ -23,7 +23,6 @@ export function getStartState() {
 }
 
 export function setCellValueInGrid(cellToChange, newValue, cells) {
-  cellToChange = lowestAvailableCellInColumn(cellToChange.column, cells);
   if (cellToChange) {
     const cellsWithNewValue = cells.map((currentCell) => {
       if (cellToChange === currentCell) {
@@ -42,7 +41,7 @@ function setCellValue(cell, newValue) {
   return { ...cell, value: newValue };
 }
 
-function lowestAvailableCellInColumn(column, cells) {
+export function lowestAvailableCellInColumn(column, cells) {
   var counter = 35;
   while (counter >= 0) {
     if (cells[counter + column].value === 0) return cells[counter + column];
@@ -50,63 +49,41 @@ function lowestAvailableCellInColumn(column, cells) {
   }
 }
 
-export function checkCompletion(cells) {
-  const playerCells = cells.filter((c) => c.value === 1);
-  const opponentCells = cells.filter((c) => c.value === 2);
+export function checkCompletion(cells, cell, colour) {
   var directions = [
-    { dir: 'UPLEFT', index: -8 },
-    { dir: 'UP', index: -7 },
-    { dir: 'UPRIGHT', index: -6 },
-    { dir: 'LEFT', index: -1 },
-    { dir: 'RIGHT', index: +1 },
-    { dir: 'DOWNLEFT', index: +6 },
-    { dir: 'DOWN', index: +7 },
-    { dir: 'DOWNRIGHT', index: +8 },
+    { dir: 'DIAGONAL_TOP_LEFT', xChange: -1, yChange: 1 },
+    { dir: 'VERTICAL', xChange: 0, yChange: 1 },
+    { dir: 'DIAGONAL_TOP_RIGHT', xChange: 1, yChange: 1 },
+    { dir: 'HORIZONTAL', xChange: 1, yChange: 0 },
   ];
 
-  directions.forEach((direction) => {
-    playerCells.forEach((cell) => {
-      var cellIndexToCheck = cell.index + direction.index;
-      if (
-        cells[cellIndexToCheck] !== undefined &&
-        cells[cellIndexToCheck].value === 1
-      ) {
-        cellIndexToCheck += direction.index;
-        if (
-          cells[cellIndexToCheck] !== undefined &&
-          cells[cellIndexToCheck].value === 1
-        ) {
-          console.log({ direction, cell, check: cellIndexToCheck });
-          cellIndexToCheck += direction.index;
-          if (
-            cells[cellIndexToCheck] !== undefined &&
-            cells[cellIndexToCheck].value === 1
-          ) {
-            return 1;
-          }
+  for (let direction of directions) {
+    var dir = 1;
+    var checkedCell = cell;
+    var counter = 1;
+    while (checkedCell.value === colour) {
+      var nextX = checkedCell.x + direction.xChange * dir;
+      var nextY = checkedCell.y + direction.yChange * dir;
+      if (getCellFromCoords(cells, nextX, nextY)?.value === colour) {
+        counter++;
+        checkedCell = getCellFromCoords(cells, nextX, nextY);
+      } else {
+        if (dir === 1) {
+          dir = -1;
+          checkedCell = cell;
+        } else {
+          checkedCell = { value: 0 };
         }
       }
-    });
-    opponentCells.forEach((cell) => {
-      var cellIndexToCheck = cell.index + direction.index;
-      if (
-        cells[cellIndexToCheck] !== undefined &&
-        cells[cellIndexToCheck].value === 2
-      ) {
-        cellIndexToCheck += direction.index;
-        if (
-          cells[cellIndexToCheck] !== undefined &&
-          cells[cellIndexToCheck].value === 2
-        ) {
-          cellIndexToCheck += direction.index;
-          if (
-            cells[cellIndexToCheck] !== undefined &&
-            cells[cellIndexToCheck].value === 2
-          ) {
-            return 2;
-          }
-        }
-      }
-    });
-  });
+    }
+    if (counter >= 4) return true;
+  }
+}
+
+function getCellFromCoords(cells, x, y) {
+  if (x > 6 || x < 0 || y > 5 || y < 0) {
+    return undefined;
+  } else {
+    return cells[y * 7 + x];
+  }
 }

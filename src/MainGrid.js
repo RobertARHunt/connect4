@@ -1,7 +1,12 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import GridCell from './GridCell';
-import { getStartState, setCellValueInGrid, checkCompletion } from './helpers';
+import {
+  getStartState,
+  setCellValueInGrid,
+  checkCompletion,
+  lowestAvailableCellInColumn,
+} from './helpers';
 
 function MainGrid() {
   const [gridState, setGridState] = useState(getStartState());
@@ -13,23 +18,31 @@ function MainGrid() {
         return (
           <GridCell
             cell={cell}
+            onClick={onClickHandler(cell)}
             key={ix}
-            ix={ix}
-            onClick={onClickHandler(cell, ix)}
           ></GridCell>
         );
       })}
     </StyledContainer>
   );
-  function onClickHandler(cell, ix) {
+  function onClickHandler(cell) {
     return () => {
       if (cell.value === 0) {
-        setGridState(setCellValueInGrid(cell, turnState, gridState));
-        if (checkCompletion(gridState) === 1) {
-          alert('Green Wins!');
-        }
-        if (checkCompletion(gridState) === 2) {
-          alert('Red Wins!');
+        const cellToSet = lowestAvailableCellInColumn(cell.x, gridState);
+        if (!cellToSet) return;
+        const newGridState = setCellValueInGrid(
+          cellToSet,
+          turnState,
+          gridState
+        );
+        setGridState(newGridState);
+        cellToSet.value = turnState;
+        if (checkCompletion(newGridState, cellToSet, turnState)) {
+          if (turnState === 1) {
+            alert('Player 1 wins!');
+          } else {
+            alert('Player 2 wins!');
+          }
         }
         setTurnState(3 - turnState);
       }
