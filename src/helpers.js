@@ -87,3 +87,8 @@ function getCellFromCoords(cells, x, y) {
     return cells[y * 7 + x];
   }
 }
+
+export function resetAll(setGridState, setTurnState) {
+  setGridState(getStartState());
+  setTurnState(1);
+}
