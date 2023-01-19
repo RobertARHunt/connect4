@@ -9,7 +9,13 @@ import {
   resetAll,
 } from './helpers';
 
-function MainGrid({ turnState, scoreState, setTurnState, setScoreState }) {
+function MainGrid({
+  turnState,
+  scoreState,
+  setTurnState,
+  setScoreState,
+  winHandler,
+}) {
   const [gridState, setGridState] = useState(getStartState());
 
   return (

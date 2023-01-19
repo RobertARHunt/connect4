@@ -1,7 +1,6 @@
 import MainGrid from './MainGrid';
 import styled, { css } from 'styled-components';
 import { useState } from 'react';
-import ScoreDisplay from './ScoreDisplay';
 
 function App() {
   const [turnState, setTurnState] = useState(1);
@@ -15,8 +14,6 @@ function App() {
         setTurnState={setTurnState}
         setScoreState={setScoreState}
       />
-
-      <ScoreDisplay scoreState={scoreState} />
     </StyledContainer>
   );
 }

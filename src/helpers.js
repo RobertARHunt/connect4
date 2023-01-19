@@ -92,3 +92,5 @@ export function resetAll(setGridState, setTurnState) {
   setGridState(getStartState());
   setTurnState(1);
 }
+
+export function winHandler(winner) {}
