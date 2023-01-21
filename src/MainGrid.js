@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import MainGame from './MainGame';
 import { getStartState } from './helpers';
+import GameOver from './GameOver';
 
-function MainGrid({ endGame }) {
+function MainGrid({ endGame, scoreState, setScoreState }) {
   const STATE = {
     DRAW: 0,
     GREEN_WIN: 1,
@@ -12,10 +13,14 @@ function MainGrid({ endGame }) {
 
   const [gridState, setGridState] = useState(getStartState());
   const [gameState, setGameState] = useState(STATE.IN_A_GAME);
-  const [scoreState, SetScoreState] = useState(0);
 
   if (gameState !== STATE.IN_A_GAME) {
-    return <GameOverScreen endGame={endGame} />;
+    return <GameOver endGame={endGame} winner={gameState} rematch={rematch} />;
+  }
+
+  function rematch(setGridState, setGameState) {
+    setGameState(STATE.IN_A_GAME);
+    setGridState(getStartState());
   }
 
   function winHandler(win) {
@@ -35,10 +40,6 @@ function MainGrid({ endGame }) {
       setGridState={setGridState}
     />
   );
-}
-
-function GameOverScreen() {
-  return <div>GAME OVER</div>;
 }
 
 export default MainGrid;
