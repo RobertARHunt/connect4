@@ -1,6 +1,5 @@
 import MainGrid from './MainGrid';
 import { useState } from 'react';
-import { resetAll } from './helpers';
 import TitleScreen from './TitleScreen';
 
 function App() {
