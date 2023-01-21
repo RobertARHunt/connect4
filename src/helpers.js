@@ -41,6 +41,11 @@ function setCellValue(cell, newValue) {
   return { ...cell, value: newValue };
 }
 
+export function resetAll(setGridState, setTurnState) {
+  setGridState(getStartState());
+  setTurnState(1);
+}
+
 export function lowestAvailableCellInColumn(column, cells) {
   var counter = 35;
   while (counter >= 0) {
@@ -51,9 +56,9 @@ export function lowestAvailableCellInColumn(column, cells) {
 
 export function checkCompletion(cells, cell, colour) {
   var directions = [
-    { dir: 'DIAGONAL_TOP_LEFT', xChange: -1, yChange: 1 },
+    { dir: 'DIAGONAL_LEFT', xChange: -1, yChange: 1 },
     { dir: 'VERTICAL', xChange: 0, yChange: 1 },
-    { dir: 'DIAGONAL_TOP_RIGHT', xChange: 1, yChange: 1 },
+    { dir: 'DIAGONAL_RIGHT', xChange: 1, yChange: 1 },
     { dir: 'HORIZONTAL', xChange: 1, yChange: 0 },
   ];
 
@@ -61,7 +66,7 @@ export function checkCompletion(cells, cell, colour) {
     var dir = 1;
     var checkedCell = cell;
     var counter = 1;
-    while (checkedCell.value === colour) {
+    while (checkedCell.value === colour && counter < 4) {
       var nextX = checkedCell.x + direction.xChange * dir;
       var nextY = checkedCell.y + direction.yChange * dir;
       if (getCellFromCoords(cells, nextX, nextY)?.value === colour) {
@@ -76,7 +81,9 @@ export function checkCompletion(cells, cell, colour) {
         }
       }
     }
-    if (counter >= 4) return true;
+    if (counter >= 4) {
+      return colour;
+    }
   }
 }
 
@@ -87,10 +94,3 @@ function getCellFromCoords(cells, x, y) {
     return cells[y * 7 + x];
   }
 }
-
-export function resetAll(setGridState, setTurnState) {
-  setGridState(getStartState());
-  setTurnState(1);
-}
-
-export function winHandler(winner) {}
