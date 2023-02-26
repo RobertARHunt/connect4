@@ -6,11 +6,60 @@ import {
   checkCompletion,
   lowestAvailableCellInColumn,
 } from './helpers';
+import { useEffect } from 'react';
 
-function MainGame({ winHandler, gridState, setGridState }) {
-  const [turnState, setTurnState] = useState(1);
+function MainGame({ winHandler, gridState, setGridState, players }) {
+  const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
+  const currentPlayer = players[currentPlayerIndex];
+
+  function getOnClickHandler(cell) {
+    if (currentPlayer.playerType !== 'Player') return () => {};
+
+    return () => {
+      // debugger;
+      if (cell.value === undefined) {
+        const cellToSet = lowestAvailableCellInColumn(cell.x, gridState);
+        if (!cellToSet) return;
+        processMove(cellToSet);
+      }
+    };
+  }
+
+  function processMove(nextCell) {
+    const newGridState = setCellValueInGrid(
+      nextCell,
+      currentPlayerIndex,
+      gridState
+    );
+    setGridState(newGridState);
+    nextCell.value = currentPlayerIndex;
+    setCurrentPlayerIndex(1 - currentPlayerIndex);
+    const winner = checkCompletion(gridState, nextCell, currentPlayerIndex);
+    if (winner !== undefined) {
+      winHandler(winner);
+    } else {
+      const cellsWithValue = gridState.filter((c) => c.value !== 0);
+      if (cellsWithValue.length === gridState.length) {
+        winHandler(0);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (currentPlayer.playerFunction) {
+      const timeout = setTimeout(() => {
+        const nextCell = currentPlayer.playerFunction(gridState);
+        if (nextCell) processMove(nextCell);
+      }, 200);
+
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  });
+
   return (
-    <StyledContainer turnState={turnState}>
+    <StyledContainer currentPlayer={currentPlayerIndex}>
       {gridState.map((cell, ix) => {
         return (
           <GridCell
@@ -22,31 +71,6 @@ function MainGame({ winHandler, gridState, setGridState }) {
       })}
     </StyledContainer>
   );
-  function getOnClickHandler(cell) {
-    return () => {
-      if (cell.value === 0) {
-        const cellToSet = lowestAvailableCellInColumn(cell.x, gridState);
-        if (!cellToSet) return;
-        const newGridState = setCellValueInGrid(
-          cellToSet,
-          turnState,
-          gridState
-        );
-        setGridState(newGridState);
-        cellToSet.value = turnState;
-        setTurnState(3 - turnState);
-        const winner = checkCompletion(gridState, cellToSet, turnState);
-        if (winner) {
-          winHandler(winner);
-        } else {
-          const cellsWithValue = gridState.filter((c) => c.value !== 0);
-          if (cellsWithValue.length === gridState.length) {
-            winHandler(0);
-          }
-        }
-      }
-    };
-  }
 }
 
 const StyledContainer = styled.div`
@@ -60,11 +84,11 @@ const StyledContainer = styled.div`
   // position: absolute;
   z-index: 10;
   ${(props) =>
-    props.turnState === 1
+    props.currentPlayer === 0
       ? css`
           border: 3px solid green;
         `
-      : props.turnState === 2 &&
+      : props.currentPlayer === 1 &&
         css`
           border: 3px solid red;
         `}

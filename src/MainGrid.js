@@ -3,7 +3,7 @@ import MainGame from './MainGame';
 import { getStartState } from './helpers';
 import GameOver from './GameOver';
 
-function MainGrid({ endGame, scoreState, setScoreState }) {
+function MainGrid({ endGame, scoreState, setScoreState, players }) {
   const STATE = {
     DRAW: 0,
     GREEN_WIN: 1,
@@ -38,6 +38,7 @@ function MainGrid({ endGame, scoreState, setScoreState }) {
       winHandler={winHandler}
       gridState={gridState}
       setGridState={setGridState}
+      players={players}
     />
   );
 }

@@ -1,7 +1,7 @@
 function getEmptyCell(props) {
   return {
     ...props,
-    value: 0,
+    value: undefined,
   };
 }
 
@@ -43,18 +43,19 @@ function setCellValue(cell, newValue) {
 
 export function resetAll(setGridState, setTurnState) {
   setGridState(getStartState());
-  setTurnState(1);
+  setTurnState(0);
 }
 
 export function lowestAvailableCellInColumn(column, cells) {
   var counter = 35;
   while (counter >= 0) {
-    if (cells[counter + column].value === 0) return cells[counter + column];
+    if (cells[counter + column].value === undefined)
+      return cells[counter + column];
     counter -= 7;
   }
 }
 
-export function checkCompletion(cells, cell, colour) {
+export function checkCompletion(cells, cell, currentPlayer) {
   var directions = [
     { dir: 'DIAGONAL_LEFT', xChange: -1, yChange: 1 },
     { dir: 'VERTICAL', xChange: 0, yChange: 1 },
@@ -66,10 +67,10 @@ export function checkCompletion(cells, cell, colour) {
     var dir = 1;
     var checkedCell = cell;
     var counter = 1;
-    while (checkedCell.value === colour && counter < 4) {
+    while (checkedCell.value === currentPlayer && counter < 4) {
       var nextX = checkedCell.x + direction.xChange * dir;
       var nextY = checkedCell.y + direction.yChange * dir;
-      if (getCellFromCoords(cells, nextX, nextY)?.value === colour) {
+      if (getCellFromCoords(cells, nextX, nextY)?.value === currentPlayer) {
         counter++;
         checkedCell = getCellFromCoords(cells, nextX, nextY);
       } else {
@@ -77,12 +78,12 @@ export function checkCompletion(cells, cell, colour) {
           dir = -1;
           checkedCell = cell;
         } else {
-          checkedCell = { value: 0 };
+          checkedCell = { value: undefined };
         }
       }
     }
     if (counter >= 4) {
-      return colour;
+      return currentPlayer;
     }
   }
 }
