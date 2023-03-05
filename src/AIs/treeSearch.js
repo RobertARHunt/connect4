@@ -1,6 +1,5 @@
 import {
   checkCompletion,
-  lowestAvailableCellInColumn,
   setCellValueInGrid,
   allAvailableMoves,
   max,
