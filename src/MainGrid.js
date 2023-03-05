@@ -13,22 +13,35 @@ function MainGrid({ endGame, scoreState, setScoreState, players }) {
 
   const [gridState, setGridState] = useState(getStartState());
   const [gameState, setGameState] = useState(STATE.IN_A_GAME);
+  const [autoRematch, setAutoRematch] = useState(false);
 
   if (gameState !== STATE.IN_A_GAME) {
-    return <GameOver endGame={endGame} winner={gameState} rematch={rematch} />;
+    return (
+      <GameOver
+        endGame={endGame}
+        winner={gameState}
+        rematch={rematch}
+        autoRematch={autoRematch}
+        setAutoRematch={setAutoRematch}
+        scoreState={scoreState}
+      />
+    );
   }
 
-  function rematch(setGridState, setGameState) {
+  function rematch() {
     setGameState(STATE.IN_A_GAME);
     setGridState(getStartState());
   }
 
   function winHandler(win) {
-    if (win === 0) {
+    if (win === undefined) {
+      setScoreState({ ...scoreState, draw: (scoreState.draw += 1) });
       setGameState(STATE.DRAW);
-    } else if (win === 1) {
+    } else if (win === 0) {
+      setScoreState({ ...scoreState, green: (scoreState.green += 1) });
       setGameState(STATE.GREEN_WIN);
-    } else if (win === 2) {
+    } else if (win === 1) {
+      setScoreState({ ...scoreState, red: (scoreState.red += 1) });
       setGameState(STATE.RED_WIN);
     }
   }
