@@ -46,11 +46,11 @@ export function resetAll(setGridState, setTurnState) {
   setTurnState(0);
 }
 
-export function lowestAvailableCellInColumn(column, cells) {
+export function lowestAvailableCellInColumn(column, grid) {
   var counter = 35;
   while (counter >= 0) {
-    if (cells[counter + column].value === undefined)
-      return cells[counter + column];
+    if (grid[counter + column].value === undefined)
+      return grid[counter + column];
     counter -= 7;
   }
 }
@@ -94,4 +94,20 @@ function getCellFromCoords(cells, x, y) {
   } else {
     return cells[y * 7 + x];
   }
+}
+
+export function allAvailableMoves(grid) {
+  return [0, 1, 2, 3, 4, 5, 6]
+    .filter((ix) => grid[ix].value === undefined)
+    .map((ix) => lowestAvailableCellInColumn(ix, grid));
+}
+
+export function max(array) {
+  var highest = 0;
+  array.forEach((i) => {
+    if (i >= highest) {
+      highest = i;
+    }
+  });
+  return highest;
 }

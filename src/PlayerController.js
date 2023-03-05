@@ -23,9 +23,9 @@ function PlayerController({ playerType, setPlayerType, colour }) {
           autoWidth
         >
           <MenuItem value={'Player'}>Player</MenuItem>
-          <MenuItem value={'AI lvl 1'}>AI lvl 1</MenuItem>
-          <MenuItem value={'AI lvl 2'}>AI lvl 2</MenuItem>
-          <MenuItem value={'AI lvl 3'}>AI lvl 3</MenuItem>
+          <MenuItem value={'AI Random'}>AI Random</MenuItem>
+          <MenuItem value={'AI Tree Search: 0'}>AI Tree Search: 0</MenuItem>
+          <MenuItem value={'AI Tree Search: 1'}>AI Tree Search: 1</MenuItem>
         </Select>
       </FormControl>
     </StyledContainer>

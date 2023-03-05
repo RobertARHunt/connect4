@@ -48,7 +48,10 @@ function MainGame({ winHandler, gridState, setGridState, players }) {
   useEffect(() => {
     if (currentPlayer.playerFunction) {
       const timeout = setTimeout(() => {
-        const nextCell = currentPlayer.playerFunction(gridState);
+        const nextCell = currentPlayer.playerFunction(
+          gridState,
+          currentPlayerIndex
+        );
         if (nextCell) processMove(nextCell);
       }, 200);
 
