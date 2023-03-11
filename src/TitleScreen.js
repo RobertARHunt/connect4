@@ -36,7 +36,7 @@ function TitleScreen({ beginGame, players, setPlayers }) {
 }
 
 const Title = styled.div`
-  margin: 10vw;
+  margin: min(10vw, 10vh);
   border: 5px solid red;
   background-color: blue;
   color: lightblue;
@@ -44,8 +44,6 @@ const Title = styled.div`
   text-align: center;
   object-align: center;
   border-radius: 25px;
-  width: 80vw;
-  height: 55vw;
   position: relative;
   z-index: 0;
 `;
@@ -58,14 +56,11 @@ const BeginGame = styled.div`
   text-align: center;
   width: 33.33333%
   z-index: 1;
-  // margin-left: 39vw;
-  // width: 20vw
   background-color: lightblue;
   color: red;
   font-size: 5vw;
   text-align: center;
   object-align: center;
-  // position: absolute;
 `;
 
 const WholeScreen = styled.div`

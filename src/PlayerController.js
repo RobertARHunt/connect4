@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
@@ -10,8 +10,8 @@ function PlayerController({ playerType, setPlayerType, colour }) {
   };
 
   return (
-    <StyledContainer>
-      <FormControl sx={{ m: 1, minWidth: 130 }}>
+    <StyledContainer colour={colour}>
+      <FormControl sx={{ m: 1, minWidth: '50vw' }}>
         <InputLabel id="player-type-controller">
           {colour} Player Type
         </InputLabel>
@@ -20,7 +20,6 @@ function PlayerController({ playerType, setPlayerType, colour }) {
           value={playerType}
           label={`${colour} Player Type`}
           onChange={handleChange}
-          autoWidth
         >
           <MenuItem value={'Player'}>Player</MenuItem>
           <MenuItem value={'AI Random'}>AI Random</MenuItem>
@@ -37,10 +36,19 @@ export default PlayerController;
 const StyledContainer = styled.div`
   text-align: center;
   z-index: 1;
-  width: 33.33333%
-  background-color: green;
   color: lightblue;
-  font-size: 5vw;
+  font-size: 3vw;
   text-align: center;
-  object-align: center;
+
+  ${(props) =>
+    css`
+      background-color: ${props.colour};
+    `}
+
+  ${(props) =>
+    props.colour === 'Red' &&
+    css`
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+    `}
 `;
