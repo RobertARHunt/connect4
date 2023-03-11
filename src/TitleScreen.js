@@ -1,4 +1,3 @@
-import { fontSize } from '@mui/system';
 import styled from 'styled-components';
 import PlayerController from './PlayerController';
 function TitleScreen({ beginGame, players, setPlayers }) {
