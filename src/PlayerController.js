@@ -12,7 +12,7 @@ function PlayerController({ playerType, setPlayerType, colour }) {
   return (
     <StyledContainer colour={colour}>
       <FormControl sx={{ m: 1, minWidth: '50vw' }}>
-        <InputLabel id="player-type-controller">
+        <InputLabel id="player-type-controller" sx={{ fontSize: 'inherit' }}>
           {colour} Player Type
         </InputLabel>
         <Select
@@ -20,6 +20,7 @@ function PlayerController({ playerType, setPlayerType, colour }) {
           value={playerType}
           label={`${colour} Player Type`}
           onChange={handleChange}
+          sx={{ fontSize: 'inherit' }}
         >
           <MenuItem value={'Player'}>Player</MenuItem>
           <MenuItem value={'AI Random'}>AI Random</MenuItem>
@@ -34,11 +35,8 @@ function PlayerController({ playerType, setPlayerType, colour }) {
 export default PlayerController;
 
 const StyledContainer = styled.div`
-  text-align: center;
-  z-index: 1;
   color: lightblue;
   font-size: 3vw;
-  text-align: center;
 
   ${(props) =>
     css`

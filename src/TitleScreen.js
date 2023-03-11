@@ -1,3 +1,4 @@
+import { fontSize } from '@mui/system';
 import styled from 'styled-components';
 import PlayerController from './PlayerController';
 function TitleScreen({ beginGame, players, setPlayers }) {
@@ -22,7 +23,11 @@ function TitleScreen({ beginGame, players, setPlayers }) {
             colour="Green"
           />
           <BeginGame>
-            <input type="button" value="START" onClick={start}></input>
+            <StartButton
+              type="button"
+              value="START"
+              onClick={start}
+            ></StartButton>
           </BeginGame>
           <PlayerController
             playerType={players[1]}
@@ -42,10 +47,8 @@ const Title = styled.div`
   color: lightblue;
   font-size: 13vw;
   text-align: center;
-  object-align: center;
   border-radius: 25px;
   position: relative;
-  z-index: 0;
 `;
 
 const FormGroup = styled.div`
@@ -53,14 +56,14 @@ const FormGroup = styled.div`
 `;
 
 const BeginGame = styled.div`
-  text-align: center;
-  width: 33.33333%
   z-index: 1;
   background-color: lightblue;
-  color: red;
-  font-size: 5vw;
-  text-align: center;
-  object-align: center;
+  font-size: 1vw;
+  padding: 2vw;
+`;
+
+const StartButton = styled.input`
+  font-size: 3vw;
 `;
 
 const WholeScreen = styled.div`
