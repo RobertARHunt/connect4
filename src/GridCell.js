@@ -1,20 +1,31 @@
 import styled, { css } from 'styled-components';
 
-function GridCell({ cell, onClick }) {
-  return <StyledCell value={cell.value} onClick={onClick}></StyledCell>;
+function GridCell({ cell, onClick, currentPlayerIndex }) {
+  return (
+    <StyledCell
+      value={cell.value}
+      onClick={onClick}
+      currentPlayerIndex={currentPlayerIndex}
+    ></StyledCell>
+  );
 }
 
 const StyledCell = styled.div`
-  font-size: 50px;
-  text-align: center;
-  border: 1px solid gray;
+  // border: 1px solid gray;
   cursor: pointer;
 
   ${(props) =>
     props.value === undefined
-      ? css`
-          background-color: lightgray;
-        `
+      ? props.currentPlayerIndex === 0
+        ? css`
+            background-color: lightgray;
+            border: 1px solid green;
+          `
+        : props.currentPlayerIndex === 1 &&
+          css`
+            background-color: lightgray;
+            border: 1px solid red;
+          `
       : props.value === 0
       ? css`
           background-color: green;

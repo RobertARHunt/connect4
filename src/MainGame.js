@@ -62,13 +62,14 @@ function MainGame({ winHandler, gridState, setGridState, players }) {
   });
 
   return (
-    <StyledContainer currentPlayer={currentPlayerIndex}>
+    <StyledContainer currentPlayerIndex={currentPlayerIndex}>
       {gridState.map((cell, ix) => {
         return (
           <GridCell
             cell={cell}
             onClick={getOnClickHandler(cell)}
             key={ix}
+            currentPlayerIndex={currentPlayerIndex}
           ></GridCell>
         );
       })}
@@ -78,22 +79,21 @@ function MainGame({ winHandler, gridState, setGridState, players }) {
 
 const StyledContainer = styled.div`
   background-color: white;
-  height: 501px;
-  width: 501px;
+  height: min(90vw, 90vh);
+  width: min(90vw, 90vh);
   display: grid;
   grid-template-columns: repeat(7, 14.2857142857%);
   grid-template-rows: repeat(6, 16.6666666667%);
-  margin: 20px;
-  // position: absolute;
+  margin: min(3vw, 3vh);
   z-index: 10;
   ${(props) =>
-    props.currentPlayer === 0
+    props.currentPlayerIndex === 0
       ? css`
-          border: 3px solid green;
+          border: min(1vw, 1vh) solid green;
         `
-      : props.currentPlayer === 1 &&
+      : props.currentPlayerIndex === 1 &&
         css`
-          border: 3px solid red;
+          border: min(1vw, 1vh) solid red;
         `}
 `;
 
