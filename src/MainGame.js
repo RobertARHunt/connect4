@@ -16,12 +16,9 @@ function MainGame({ winHandler, gridState, setGridState, players }) {
     if (currentPlayer.playerType !== 'Player') return () => {};
 
     return () => {
-      // debugger;
-      if (cell.value === undefined) {
-        const cellToSet = lowestAvailableCellInColumn(cell.x, gridState);
-        if (!cellToSet) return;
-        processMove(cellToSet);
-      }
+      const cellToSet = lowestAvailableCellInColumn(cell.x, gridState);
+      if (!cellToSet) return;
+      processMove(cellToSet);
     };
   }
 
