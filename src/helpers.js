@@ -15,10 +15,8 @@ export function getStartState() {
       x,
       index,
     });
-    // console.log(newCell);
     cells.push(newCell);
   }
-  // console.log(cells);
   return cells;
 }
 
@@ -103,11 +101,13 @@ export function allAvailableMoves(grid) {
 }
 
 export function max(array) {
-  var highest = 0;
+  return array.reduce((a, b) => (a < b ? b : a));
+}
+
+export function average(array) {
+  var total = 0;
   array.forEach((i) => {
-    if (i >= highest) {
-      highest = i;
-    }
+    total += i;
   });
-  return highest;
+  return total / array.length;
 }

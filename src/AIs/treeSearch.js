@@ -3,11 +3,11 @@ import {
   setCellValueInGrid,
   allAvailableMoves,
   max,
+  average,
 } from '../helpers';
 
 export function treeSearch(searchDepth) {
   return (grid, playerIndex) => {
-    console.log('treesearch ai was run');
     const availableMoves = allAvailableMoves(grid);
     const movePoints = availableMoves.map((move) => ({
       move: move,
@@ -21,11 +21,23 @@ export function treeSearch(searchDepth) {
 }
 
 function evaluateMove(grid, playerIndex, move, depth) {
-  console.log('evaluateMove', { playerIndex, move: move, depth });
   const { newGrid, newMove } = simulateMove(move, grid, playerIndex);
   const isWinningMove =
     checkCompletion(newGrid, newMove, playerIndex) === playerIndex;
-  return isWinningMove ? 1 : 0;
+
+  if (isWinningMove) {
+    return 1;
+  } else {
+    if (depth > 0) {
+      const availableMoves = allAvailableMoves(newGrid);
+      if (availableMoves.length === 0) return 0;
+      const movePoints = availableMoves.map((nextMove) => ({
+        move: nextMove,
+        points: evaluateMove(newGrid, 1 - playerIndex, nextMove, depth - 1),
+      }));
+      return -average(movePoints.map((m) => m.points));
+    } else return 0;
+  }
 }
 
 function simulateMove(move, grid, playerIndex) {
