@@ -1,13 +1,13 @@
 import styled, { css } from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import GridCell from './GridCell';
 import {
   setCellValueInGrid,
   checkCompletion,
   lowestAvailableCellInColumn,
   getStartState,
+  useAnimationFrame,
 } from './helpers';
-import { useEffect } from 'react';
 
 export const GAME_OVER_RESULT = {
   GREEN: 0,
@@ -49,6 +49,16 @@ function MainGrid({ players, onGameOver }) {
     }
   }
 
+  // useAnimationFrame(() => {
+  //   if (currentPlayer.playerFunction) {
+  //     const nextCell = currentPlayer.playerFunction(
+  //       gridState,
+  //       currentPlayerIndex
+  //     );
+  //     if (nextCell) processMove(nextCell);
+  //   }
+  // });
+
   useEffect(() => {
     if (currentPlayer.playerFunction) {
       const timeout = setTimeout(() => {
@@ -57,7 +67,7 @@ function MainGrid({ players, onGameOver }) {
           currentPlayerIndex
         );
         if (nextCell) processMove(nextCell);
-      }, 200);
+      }, 20);
 
       return () => {
         clearTimeout(timeout);

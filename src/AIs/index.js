@@ -16,6 +16,9 @@ export function getAI(playerType) {
       return treeSearch(2);
 
     case 'AI Tree Search: 3':
+      return treeSearch(3);
+
+    case 'AI Tree Search: 4':
       return treeSearch(4);
 
     case 'AI Tree Search: 5':

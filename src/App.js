@@ -11,13 +11,6 @@ function App() {
     MATCH_OVER: 2,
   };
 
-  const GAME_STATES = {
-    DRAW: 0,
-    GREEN_WIN: 1,
-    RED_WIN: 2,
-    IN_A_MATCH: 3,
-  };
-
   const DEFAULT_MATCH_STATE = {
     gamesToPlay: 1,
     gamesPlayed: 0,
@@ -27,8 +20,6 @@ function App() {
   const [appState, setAppState] = useState(STATE.TITLE_SCREEN);
   const [players, setPlayers] = useState(['Player', 'Player']);
   const [matchState, setMatchState] = useState(DEFAULT_MATCH_STATE);
-  const [autoRematch, setAutoRematch] = useState(false);
-  const [gameState, setGameState] = useState(GAME_STATES.IN_A_MATCH);
 
   function beginMatch() {
     setMatchState({
@@ -53,10 +44,6 @@ function App() {
     }));
   }
 
-  function rematch() {
-    setGameState(STATE.IN_A_MATCH);
-  }
-
   switch (appState) {
     case STATE.TITLE_SCREEN:
       return (
@@ -68,25 +55,21 @@ function App() {
           setMatchState={setMatchState}
         />
       );
-    case STATE.MATCH_OVER:
-      return (
-        <MatchOver
-          onClose={returnToTitleScreen}
-          winner={gameState}
-          rematch={rematch}
-          autoRematch={autoRematch}
-          setAutoRematch={setAutoRematch}
-          matchState={matchState}
-        />
-      );
     case STATE.IN_A_MATCH:
       return (
         <MainGame
           matchState={matchState}
           setMatchState={setMatchState}
           players={mapPlayers(players)}
-          setGameState={setGameState}
           onMatchOver={handleMatchOver}
+        />
+      );
+    case STATE.MATCH_OVER:
+      return (
+        <MatchOver
+          matchState={matchState}
+          rematch={beginMatch}
+          onClose={returnToTitleScreen}
         />
       );
     default:
