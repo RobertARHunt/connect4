@@ -1,59 +1,97 @@
+import styled, { css } from 'styled-components';
 import { useState } from 'react';
-import MainGame from './MainGame';
-import { getStartState } from './helpers';
-import GameOver from './GameOver';
+import GridCell from './GridCell';
+import {
+  setCellValueInGrid,
+  checkCompletion,
+  lowestAvailableCellInColumn,
+} from './helpers';
+import { useEffect } from 'react';
 
-function MainGrid({ endGame, scoreState, setScoreState, players }) {
-  const STATE = {
-    DRAW: 0,
-    GREEN_WIN: 1,
-    RED_WIN: 2,
-    IN_A_GAME: 3,
-  };
+function MainGrid({ winHandler, gridState, setGridState, players }) {
+  const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
+  const currentPlayer = players[currentPlayerIndex];
 
-  const [gridState, setGridState] = useState(getStartState());
-  const [gameState, setGameState] = useState(STATE.IN_A_GAME);
-  const [autoRematch, setAutoRematch] = useState(false);
+  function getOnClickHandler(cell) {
+    if (currentPlayer.playerType !== 'Player') return () => {};
 
-  if (gameState !== STATE.IN_A_GAME) {
-    return (
-      <GameOver
-        endGame={endGame}
-        winner={gameState}
-        rematch={rematch}
-        autoRematch={autoRematch}
-        setAutoRematch={setAutoRematch}
-        scoreState={scoreState}
-      />
+    return () => {
+      const cellToSet = lowestAvailableCellInColumn(cell.x, gridState);
+      if (!cellToSet) return;
+      processMove(cellToSet);
+    };
+  }
+
+  function processMove(nextCell) {
+    const newGridState = setCellValueInGrid(
+      nextCell,
+      currentPlayerIndex,
+      gridState
     );
-  }
-
-  function rematch() {
-    setGameState(STATE.IN_A_GAME);
-    setGridState(getStartState());
-  }
-
-  function winHandler(win) {
-    if (win === undefined) {
-      setScoreState({ ...scoreState, draw: (scoreState.draw += 1) });
-      setGameState(STATE.DRAW);
-    } else if (win === 0) {
-      setScoreState({ ...scoreState, green: (scoreState.green += 1) });
-      setGameState(STATE.GREEN_WIN);
-    } else if (win === 1) {
-      setScoreState({ ...scoreState, red: (scoreState.red += 1) });
-      setGameState(STATE.RED_WIN);
+    setGridState(newGridState);
+    nextCell.value = currentPlayerIndex;
+    setCurrentPlayerIndex(1 - currentPlayerIndex);
+    const winner = checkCompletion(gridState, nextCell, currentPlayerIndex);
+    if (winner !== undefined) {
+      winHandler(winner);
+    } else {
+      const cellsWithValue = gridState.filter((c) => c.value !== 0);
+      if (cellsWithValue.length === gridState.length) {
+        winHandler(0);
+      }
     }
   }
 
+  useEffect(() => {
+    if (currentPlayer.playerFunction) {
+      const timeout = setTimeout(() => {
+        const nextCell = currentPlayer.playerFunction(
+          gridState,
+          currentPlayerIndex
+        );
+        if (nextCell) processMove(nextCell);
+      }, 200);
+
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  });
+
   return (
-    <MainGame
-      winHandler={winHandler}
-      gridState={gridState}
-      setGridState={setGridState}
-      players={players}
-    />
+    <StyledContainer currentPlayerIndex={currentPlayerIndex}>
+      {gridState.map((cell, ix) => {
+        return (
+          <GridCell
+            cell={cell}
+            onClick={getOnClickHandler(cell)}
+            key={ix}
+            currentPlayerIndex={currentPlayerIndex}
+          ></GridCell>
+        );
+      })}
+    </StyledContainer>
   );
 }
+
+const StyledContainer = styled.div`
+  background-color: white;
+  height: min(90vw, 90vh);
+  width: min(90vw, 90vh);
+  display: grid;
+  grid-template-columns: repeat(7, 14.2857142857%);
+  grid-template-rows: repeat(6, 16.6666666667%);
+  margin: min(3vw, 3vh);
+  z-index: 10;
+  ${(props) =>
+    props.currentPlayerIndex === 0
+      ? css`
+          border: min(1vw, 1vh) solid green;
+        `
+      : props.currentPlayerIndex === 1 &&
+        css`
+          border: min(1vw, 1vh) solid red;
+        `}
+`;
 
 export default MainGrid;
