@@ -5,10 +5,18 @@ import {
   setCellValueInGrid,
   checkCompletion,
   lowestAvailableCellInColumn,
+  getStartState,
 } from './helpers';
 import { useEffect } from 'react';
 
-function MainGrid({ winHandler, gridState, setGridState, players }) {
+export const GAME_OVER_RESULT = {
+  GREEN: 0,
+  RED: 1,
+  DRAW: 2,
+};
+
+function MainGrid({ players, onGameOver }) {
+  const [gridState, setGridState] = useState(getStartState());
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const currentPlayer = players[currentPlayerIndex];
 
@@ -33,12 +41,11 @@ function MainGrid({ winHandler, gridState, setGridState, players }) {
     setCurrentPlayerIndex(1 - currentPlayerIndex);
     const winner = checkCompletion(gridState, nextCell, currentPlayerIndex);
     if (winner !== undefined) {
-      winHandler(winner);
-    } else {
-      const cellsWithValue = gridState.filter((c) => c.value !== 0);
-      if (cellsWithValue.length === gridState.length) {
-        winHandler(0);
-      }
+      onGameOver(winner);
+      setGridState(getStartState());
+    } else if (gridState.every((c) => c.value !== undefined)) {
+      onGameOver(GAME_OVER_RESULT.DRAW);
+      setGridState(getStartState());
     }
   }
 

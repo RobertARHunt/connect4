@@ -5,14 +5,14 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Slider from '@mui/material/Slider';
 
 function TitleScreen({
-  beginGame,
+  beginMatch,
   players,
   setPlayers,
   matchState,
   setMatchState,
 }) {
   function start() {
-    beginGame();
+    beginMatch();
   }
   function setGreenPlayerType(newPlayerType) {
     setPlayers([newPlayerType, players[1]]);
@@ -131,11 +131,6 @@ const BeginGame = styled.div`
 
 const StartButton = styled.input`
   font-size: 3vw;
-`;
-
-const HowManyGames = styled.div`
-  font-size: 3vw;
-  color: black;
 `;
 
 const WholeScreen = styled.div`

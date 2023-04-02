@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import { Switch } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
-function GameOver({
-  endGame,
+function MatchOver({
+  endGame: onClose,
   winner,
   rematch,
   autoRematch,
   setAutoRematch,
-  scoreState,
+  matchState,
 }) {
   useEffect(() => {
     if (autoRematch) {
@@ -37,19 +37,19 @@ function GameOver({
     }
   }
 
-  function getScoreStatement(scoreState) {
-    return `GREEN: ${scoreState.green} WINS! RED: ${scoreState.red} WINS! AND ${scoreState.draw} DRAWS!`;
+  function getScoreStatement(scores) {
+    return `GREEN: ${scores.green} WINS! RED: ${scores.red} WINS! AND ${scores.draw} DRAWS!`;
   }
 
   return (
     <div>
       GAME OVER, {getWinnerStatement(winner)}
       <br />
-      CURRENT SCORES ARE: {getScoreStatement(scoreState)}
+      CURRENT SCORES ARE: {getScoreStatement(matchState.scores)}
       <br />
       <input type="button" value="REMATCH" onClick={rematch}></input>
       <br />
-      <input type="button" value="END GAME" onClick={endGame}></input>
+      <input type="button" value="END GAME" onClick={onClose}></input>
       <br />
       <FormControlLabel
         control={<Switch checked={autoRematch} onChange={handleChange} />}
@@ -59,4 +59,4 @@ function GameOver({
   );
 }
 
-export default GameOver;
+export default MatchOver;

@@ -2,21 +2,20 @@ import MainGame from './MainGame';
 import { useState } from 'react';
 import TitleScreen from './TitleScreen';
 import { getAI } from './AIs';
-import { getStartState } from './helpers';
-import GameOver from './GameOver';
+import MatchOver from './MatchOver';
 
 function App() {
   const STATE = {
     TITLE_SCREEN: 0,
-    IN_A_GAME: 1,
-    GAME_OVER: 2,
+    IN_A_MATCH: 1,
+    MATCH_OVER: 2,
   };
 
   const GAME_STATES = {
     DRAW: 0,
     GREEN_WIN: 1,
     RED_WIN: 2,
-    IN_A_GAME: 3,
+    IN_A_MATCH: 3,
   };
 
   const DEFAULT_MATCH_STATE = {
@@ -26,21 +25,25 @@ function App() {
   };
 
   const [appState, setAppState] = useState(STATE.TITLE_SCREEN);
-  const [scoreState, setScoreState] = useState({ draw: 0, green: 0, red: 0 });
   const [players, setPlayers] = useState(['Player', 'Player']);
   const [matchState, setMatchState] = useState(DEFAULT_MATCH_STATE);
   const [autoRematch, setAutoRematch] = useState(false);
-  const [gridState, setGridState] = useState(getStartState());
-  const [gameState, setGameState] = useState(GAME_STATES.IN_A_GAME);
+  const [gameState, setGameState] = useState(GAME_STATES.IN_A_MATCH);
 
-  function beginGame() {
-    setAppState(STATE.IN_A_GAME);
-    setScoreState({ draw: 0, green: 0, red: 0 });
+  function beginMatch() {
+    setMatchState({
+      ...DEFAULT_MATCH_STATE,
+      gamesToPlay: matchState.gamesToPlay,
+    });
+    setAppState(STATE.IN_A_MATCH);
   }
 
-  function endGame() {
+  function returnToTitleScreen() {
     setAppState(STATE.TITLE_SCREEN);
-    setScoreState({ draw: 0, green: 0, red: 0 });
+  }
+
+  function handleMatchOver() {
+    setAppState(STATE.MATCH_OVER);
   }
 
   function mapPlayers(players) {
@@ -51,41 +54,43 @@ function App() {
   }
 
   function rematch() {
-    setGameState(STATE.IN_A_GAME);
-    setGridState(getStartState());
+    setGameState(STATE.IN_A_MATCH);
   }
 
   switch (appState) {
     case STATE.TITLE_SCREEN:
       return (
         <TitleScreen
-          beginGame={beginGame}
+          beginMatch={beginMatch}
           players={players}
           setPlayers={setPlayers}
           matchState={matchState}
           setMatchState={setMatchState}
         />
       );
-    case STATE.GAME_OVER:
+    case STATE.MATCH_OVER:
       return (
-        <GameOver
-          endGame={endGame}
+        <MatchOver
+          onClose={returnToTitleScreen}
           winner={gameState}
           rematch={rematch}
           autoRematch={autoRematch}
           setAutoRematch={setAutoRematch}
-          scoreState={scoreState}
+          matchState={matchState}
+        />
+      );
+    case STATE.IN_A_MATCH:
+      return (
+        <MainGame
+          matchState={matchState}
+          setMatchState={setMatchState}
+          players={mapPlayers(players)}
+          setGameState={setGameState}
+          onMatchOver={handleMatchOver}
         />
       );
     default:
-      <MainGame
-        scoreState={scoreState}
-        setScoreState={setScoreState}
-        players={mapPlayers(players)}
-        gridState={gridState}
-        setGridState={setGridState}
-        setGameState={setGameState}
-      />;
+      throw new Error(`UNKNOWN APP STATE: ${appState}`);
   }
 }
 
