@@ -1,6 +1,16 @@
 import styled from 'styled-components';
 import PlayerController from './PlayerController';
-function TitleScreen({ beginGame, players, setPlayers }) {
+import Stack from '@mui/material/Stack';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Slider from '@mui/material/Slider';
+
+function TitleScreen({
+  beginGame,
+  players,
+  setPlayers,
+  matchState,
+  setMatchState,
+}) {
   function start() {
     beginGame();
   }
@@ -10,6 +20,36 @@ function TitleScreen({ beginGame, players, setPlayers }) {
   function setRedPlayerType(newPlayerType) {
     setPlayers([players[0], newPlayerType]);
   }
+
+  const availableNumbersOfGames = [
+    {
+      value: 1,
+      label: '1',
+    },
+    {
+      value: 5,
+    },
+    {
+      value: 10,
+      label: '10',
+    },
+    {
+      value: 25,
+      label: '25',
+    },
+    {
+      value: 50,
+      label: '50',
+    },
+    {
+      value: 100,
+      label: '100',
+    },
+  ];
+
+  const handleSliderChange = (_target, value) => {
+    setMatchState({ ...matchState, gamesToPlay: value });
+  };
 
   return (
     <WholeScreen>
@@ -22,11 +62,37 @@ function TitleScreen({ beginGame, players, setPlayers }) {
             colour="Green"
           />
           <BeginGame>
-            <StartButton
-              type="button"
-              value="START"
-              onClick={start}
-            ></StartButton>
+            <Stack
+              justifyContent="center"
+              alignItems="center"
+              direction="row"
+              spacing={2}
+            >
+              <FormControlLabel
+                labelPlacement="top"
+                control={
+                  <Slider
+                    value={matchState.gamesToPlay}
+                    onChange={handleSliderChange}
+                    valueLabelDisplay="auto"
+                    min={-5}
+                    max={105}
+                    step={null}
+                    marks={availableNumbersOfGames}
+                    sx={{
+                      width: '90ch',
+                    }}
+                  />
+                }
+                label="How Many Games To Play?"
+              />
+              <StartButton
+                type="button"
+                value="START"
+                onClick={start}
+              ></StartButton>
+            </Stack>
+            {/* <PlayNumButton value="Leave Blank if normal"></PlayNumButton> */}
           </BeginGame>
           <PlayerController
             playerType={players[1]}
@@ -59,10 +125,17 @@ const BeginGame = styled.div`
   background-color: lightblue;
   font-size: 1vw;
   padding: 2vw;
+  content-align: center;
+  color: black;
 `;
 
 const StartButton = styled.input`
   font-size: 3vw;
+`;
+
+const HowManyGames = styled.div`
+  font-size: 3vw;
+  color: black;
 `;
 
 const WholeScreen = styled.div`
