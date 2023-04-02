@@ -24,8 +24,14 @@ function PlayerController({ playerType, setPlayerType, colour }) {
         >
           <MenuItem value={'Player'}>Player</MenuItem>
           <MenuItem value={'AI Random'}>AI Random</MenuItem>
-          <MenuItem value={'AI Tree Search: 0'}>AI Tree Search: 0</MenuItem>
-          <MenuItem value={'AI Tree Search: 1'}>AI Tree Search: 1</MenuItem>
+          <MenuItem value={'AI Tree Search: 0'}>AI Tree Search: 1</MenuItem>
+          <MenuItem value={'AI Tree Search: 1'}>AI Tree Search: 2</MenuItem>
+          <MenuItem value={'AI Tree Search: 2'}>AI Tree Search: 3</MenuItem>
+          <MenuItem value={'AI Tree Search: 3'}>AI Tree Search: 4</MenuItem>
+          <MenuItem value={'AI Tree Search: 4'}>AI Tree Search: 5</MenuItem>
+          <MenuItem value={'AI Tree Search: 5'}>AI Tree Search: 6</MenuItem>
+          <MenuItem value={'AI Tree Search: 6'}>AI Tree Search: 7</MenuItem>
+          <MenuItem value={'AI Tree Search: 7'}>AI Tree Search: 8</MenuItem>
         </Select>
       </FormControl>
     </StyledContainer>
