@@ -1,0 +1,3 @@
+- improve game over screen aesthetics
+  - maybe add graph to represent game results
+  - change "end game" button to "end match"
