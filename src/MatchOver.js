@@ -5,13 +5,13 @@ function MatchOver({ matchState, rematch, onClose }) {
 
   return (
     <div>
-      GAME OVER
+      MATCH OVER
       <br />
       CURRENT SCORES ARE: {getScoreStatement(matchState.scores)}
       <br />
       <input type="button" value="REMATCH" onClick={rematch}></input>
       <br />
-      <input type="button" value="END GAME" onClick={onClose}></input>
+      <input type="button" value="END MATCH" onClick={onClose}></input>
     </div>
   );
 }
