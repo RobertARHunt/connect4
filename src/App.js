@@ -15,6 +15,7 @@ function App() {
     gamesToPlay: 1,
     gamesPlayed: 0,
     scores: { draw: 0, green: 0, red: 0 },
+    firstPlayer: Math.round(Math.random()),
   };
 
   const [appState, setAppState] = useState(STATE.TITLE_SCREEN);

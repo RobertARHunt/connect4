@@ -15,9 +15,9 @@ export const GAME_OVER_RESULT = {
   DRAW: 2,
 };
 
-function MainGrid({ players, onGameOver }) {
+function MainGrid({ players, onGameOver, firstPlayer }) {
   const [gridState, setGridState] = useState(getStartState());
-  const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
+  const [currentPlayerIndex, setCurrentPlayerIndex] = useState(firstPlayer);
   const currentPlayer = players[currentPlayerIndex];
 
   function getOnClickHandler(cell) {

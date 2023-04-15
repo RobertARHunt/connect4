@@ -5,6 +5,7 @@ function MainGame({ matchState, setMatchState, players, onMatchOver }) {
     let newMatchState = {
       ...matchState,
       gamesPlayed: matchState.gamesPlayed + 1,
+      firstPlayer: 1 - matchState.firstPlayer,
     };
 
     switch (result) {
@@ -28,7 +29,13 @@ function MainGame({ matchState, setMatchState, players, onMatchOver }) {
     }
   }
 
-  return <MainGrid players={players} onGameOver={winHandler} />;
+  return (
+    <MainGrid
+      players={players}
+      onGameOver={winHandler}
+      firstPlayer={matchState.firstPlayer}
+    />
+  );
 }
 
 export default MainGame;
