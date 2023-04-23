@@ -8,6 +8,7 @@ import {
   getStartState,
   useAnimationFrame,
 } from './helpers';
+import BarChart from './BarChart';
 
 export const GAME_OVER_RESULT = {
   GREEN: 0,
@@ -15,7 +16,7 @@ export const GAME_OVER_RESULT = {
   DRAW: 2,
 };
 
-function MainGrid({ players, onGameOver, firstPlayer }) {
+function MainGrid({ players, onGameOver, firstPlayer, matchState }) {
   const [gridState, setGridState] = useState(getStartState());
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(firstPlayer);
   const currentPlayer = players[currentPlayerIndex];
@@ -76,18 +77,21 @@ function MainGrid({ players, onGameOver, firstPlayer }) {
   });
 
   return (
-    <StyledContainer currentPlayerIndex={currentPlayerIndex}>
-      {gridState.map((cell, ix) => {
-        return (
-          <GridCell
-            cell={cell}
-            onClick={getOnClickHandler(cell)}
-            key={ix}
-            currentPlayerIndex={currentPlayerIndex}
-          ></GridCell>
-        );
-      })}
-    </StyledContainer>
+    <div>
+      <BarChart matchState={matchState}></BarChart>
+      <StyledContainer currentPlayerIndex={currentPlayerIndex}>
+        {gridState.map((cell, ix) => {
+          return (
+            <GridCell
+              cell={cell}
+              onClick={getOnClickHandler(cell)}
+              key={ix}
+              currentPlayerIndex={currentPlayerIndex}
+            ></GridCell>
+          );
+        })}
+      </StyledContainer>
+    </div>
   );
 }
 

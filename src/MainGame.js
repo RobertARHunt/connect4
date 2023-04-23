@@ -34,6 +34,7 @@ function MainGame({ matchState, setMatchState, players, onMatchOver }) {
       players={players}
       onGameOver={winHandler}
       firstPlayer={matchState.firstPlayer}
+      matchState={matchState}
     />
   );
 }
