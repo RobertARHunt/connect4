@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 function BarChart({ matchState: { scores, gamesPlayed, gamesToPlay } }) {
-  const gapSize = gamesToPlay - gamesPlayed;
+  const gamesRemaining = gamesToPlay - gamesPlayed;
 
   const Bar = styled.div`
     height: 20px;
@@ -20,11 +20,23 @@ function BarChart({ matchState: { scores, gamesPlayed, gamesToPlay } }) {
 
   return (
     <Holder>
-      <Bar score={scores.green * 2} color="green" />
-      <Gap size={gapSize} />
-      <Bar score={scores.draw * 2} color="lightgray" />
-      <Gap size={gapSize} />
-      <Bar score={scores.red * 2} color="red" />
+      <Bar
+        score={scores.green * 2}
+        color="green"
+        title={`${scores.green} green wins`}
+      />
+      <Gap size={gamesRemaining} title={`${gamesRemaining} games remaining`} />
+      <Bar
+        score={scores.draw * 2}
+        color="lightgray"
+        title={`${scores.draw} draws`}
+      />
+      <Gap size={gamesRemaining} title={`${gamesRemaining} games remaining`} />
+      <Bar
+        score={scores.red * 2}
+        color="red"
+        title={`${scores.red} red wins`}
+      />
     </Holder>
   );
 }
