@@ -7,7 +7,7 @@ function MatchOver({ matchState, rematch, onClose }) {
 
   return (
     <div>
-      MATCH OVER
+      <img src=".\gameOverImg.png" alt="alt" />
       <br />
       CURRENT SCORES ARE: {getScoreStatement(matchState.scores)}
       <br />

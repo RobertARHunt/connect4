@@ -1,2 +1,2 @@
-- improve game over screen aesthetics
-  - maybe add graph to represent game results
+- both halves of treesearch AI seperated
+- more graphs and charts to show results
