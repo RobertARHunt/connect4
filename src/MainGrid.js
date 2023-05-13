@@ -6,7 +6,7 @@ import {
   checkCompletion,
   lowestAvailableCellInColumn,
   getStartState,
-  useAnimationFrame,
+  // useAnimationFrame,
 } from './helpers';
 import BarChart from './BarChart';
 
