@@ -11,6 +11,11 @@
   },
   "plugins": ["react"],
   "rules": {
-    "no-console": "error"
+    "no-console": "error",
+    "comma-dangle": "off",
+    "semi": "off",
+    "react/prop-types": "off",
+    "space-before-function-paren": "off",
+    "react/react-in-jsx-scope": "off"
   }
 }
