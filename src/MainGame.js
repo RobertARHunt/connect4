@@ -2,7 +2,7 @@ import MainGrid, { GAME_OVER_RESULT } from './MainGrid';
 
 function MainGame({ matchState, setMatchState, players, onMatchOver }) {
   function winHandler(result) {
-    let newMatchState = {
+    const newMatchState = {
       ...matchState,
       gamesPlayed: matchState.gamesPlayed + 1,
       firstPlayer: 1 - matchState.firstPlayer,

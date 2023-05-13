@@ -47,29 +47,30 @@ export function resetAll(setGridState, setTurnState) {
 }
 
 export function lowestAvailableCellInColumn(column, grid) {
-  var counter = 35;
+  let counter = 35;
   while (counter >= 0) {
-    if (grid[counter + column].value === undefined)
+    if (grid[counter + column].value === undefined) {
       return grid[counter + column];
+    }
     counter -= 7;
   }
 }
 
 export function checkCompletion(cells, cell, currentPlayer) {
-  var directions = [
+  const directions = [
     { dir: 'DIAGONAL_LEFT', xChange: -1, yChange: 1 },
     { dir: 'VERTICAL', xChange: 0, yChange: 1 },
     { dir: 'DIAGONAL_RIGHT', xChange: 1, yChange: 1 },
     { dir: 'HORIZONTAL', xChange: 1, yChange: 0 },
   ];
 
-  for (let direction of directions) {
-    var dir = 1;
-    var checkedCell = cell;
-    var counter = 1;
+  for (const direction of directions) {
+    let dir = 1;
+    let checkedCell = cell;
+    let counter = 1;
     while (checkedCell.value === currentPlayer && counter < 4) {
-      var nextX = checkedCell.x + direction.xChange * dir;
-      var nextY = checkedCell.y + direction.yChange * dir;
+      let nextX = checkedCell.x + direction.xChange * dir;
+      let nextY = checkedCell.y + direction.yChange * dir;
       if (getCellFromCoords(cells, nextX, nextY)?.value === currentPlayer) {
         counter++;
         checkedCell = getCellFromCoords(cells, nextX, nextY);
@@ -107,7 +108,7 @@ export function max(array) {
 }
 
 export function average(array) {
-  var total = 0;
+  let total = 0;
   array.forEach((i) => {
     total += i;
   });
@@ -132,6 +133,5 @@ export function useAnimationFrame(callback) {
   React.useEffect(() => {
     requestRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(requestRef.current);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Make sure the effect runs only once
 }

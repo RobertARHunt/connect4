@@ -16,6 +16,8 @@
     "semi": "off",
     "react/prop-types": "off",
     "space-before-function-paren": "off",
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "curly": "off",
+    "prefer-const": "off"
   }
 }
