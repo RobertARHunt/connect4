@@ -34,7 +34,7 @@ function MainGrid({ players, onGameOver, firstPlayer, matchState }) {
     const newGridState = setCellValueInGrid(
       nextCell,
       currentPlayerIndex,
-      gridState
+      gridState,
     );
     setGridState(newGridState);
     nextCell.value = currentPlayerIndex;
@@ -43,7 +43,7 @@ function MainGrid({ players, onGameOver, firstPlayer, matchState }) {
     if (winner !== undefined) {
       onGameOver(winner);
       setGridState(getStartState());
-    } else if (gridState.every((c) => c.value !== undefined)) {
+    } else if (gridState.every(c => c.value !== undefined)) {
       onGameOver(GAME_OVER_RESULT.DRAW);
       setGridState(getStartState());
     }
@@ -54,7 +54,7 @@ function MainGrid({ players, onGameOver, firstPlayer, matchState }) {
       const timeout = setTimeout(() => {
         const nextCell = currentPlayer.playerFunction(
           gridState,
-          currentPlayerIndex
+          currentPlayerIndex,
         );
         if (nextCell) processMove(nextCell);
       }, 20);
@@ -75,8 +75,7 @@ function MainGrid({ players, onGameOver, firstPlayer, matchState }) {
               cell={cell}
               onClick={getOnClickHandler(cell)}
               key={ix}
-              currentPlayerIndex={currentPlayerIndex}
-            ></GridCell>
+              currentPlayerIndex={currentPlayerIndex}></GridCell>
           );
         })}
       </StyledContainer>
@@ -93,7 +92,7 @@ const StyledContainer = styled.div`
   grid-template-rows: repeat(6, 16.6666666667%);
   margin: min(3vw, 3vh);
   z-index: 10;
-  ${(props) =>
+  ${props =>
     props.currentPlayerIndex === 0
       ? css`
           border: min(1vw, 1vh) solid green;
