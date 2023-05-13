@@ -69,8 +69,8 @@ export function checkCompletion(cells, cell, currentPlayer) {
     let checkedCell = cell;
     let counter = 1;
     while (checkedCell.value === currentPlayer && counter < 4) {
-      let nextX = checkedCell.x + direction.xChange * dir;
-      let nextY = checkedCell.y + direction.yChange * dir;
+      const nextX = checkedCell.x + direction.xChange * dir;
+      const nextY = checkedCell.y + direction.yChange * dir;
       if (getCellFromCoords(cells, nextX, nextY)?.value === currentPlayer) {
         counter++;
         checkedCell = getCellFromCoords(cells, nextX, nextY);

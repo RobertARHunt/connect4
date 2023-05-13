@@ -10,7 +10,7 @@ export function treeSearch(searchDepth) {
   return (grid, playerIndex) => {
     const availableMoves = allAvailableMoves(grid);
     const movePoints = availableMoves.map((move) => ({
-      move: move,
+      move,
       points: evaluateMove(grid, playerIndex, move, searchDepth),
     }));
     const maxPoints = max(movePoints.map((m) => m.points));
