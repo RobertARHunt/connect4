@@ -6,7 +6,6 @@ import {
   checkCompletion,
   lowestAvailableCellInColumn,
   getStartState,
-  useAnimationFrame,
 } from './helpers';
 import BarChart from './BarChart';
 
@@ -49,16 +48,6 @@ function MainGrid({ players, onGameOver, firstPlayer, matchState }) {
       setGridState(getStartState());
     }
   }
-
-  // useAnimationFrame(() => {
-  //   if (currentPlayer.playerFunction) {
-  //     const nextCell = currentPlayer.playerFunction(
-  //       gridState,
-  //       currentPlayerIndex
-  //     );
-  //     if (nextCell) processMove(nextCell);
-  //   }
-  // });
 
   useEffect(() => {
     if (currentPlayer.playerFunction) {
